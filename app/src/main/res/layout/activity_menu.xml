@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mainmenu.MenuActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TableRow
+                android:id="@+id/tname"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/name"
+                    tools:ignore="MissingConstraints" />
+                <Button
+                    android:id="@+id/name"
+                    android:layout_width="161dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/button"
+                    android:text="Иванов Иван" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tsend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/send" />
+
+                <Button
+                    android:id="@+id/send"
+                    android:layout_width="161dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/button"
+                    android:text="@string/title_messages"
+                    tools:ignore="MissingConstraints" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tuspevaemost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/uspevaemost" />
+                <Button
+                    android:id="@+id/uspevaemost"
+                    android:layout_width="161dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/button"
+                    android:text="@string/title_uspevaemost" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/ttechers"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/techers"
+                    tools:ignore="MissingConstraints" />
+
+                <Button
+                    android:id="@+id/techers"
+                    android:layout_width="161dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/button"
+                    android:text="@string/title_teachers"
+                    tools:ignore="MissingConstraints" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tolimp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/olimp"
+                    tools:ignore="MissingConstraints" />
+
+                <Button
+                    android:id="@+id/olimp"
+                    android:layout_width="161dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/button"
+                    android:text="@string/title_olimps" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/ttime_table"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/time_table"
+                    tools:ignore="MissingConstraints" />
+
+                <Button
+                    android:id="@+id/time_table"
+                    android:layout_width="161dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/button"
+                    android:text="@string/title_time_table"
+                    tools:ignore="MissingConstraints" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/titog_mark"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/itog_mark"
+                    tools:ignore="MissingConstraints" />
+
+                <Button
+                    android:id="@+id/itog_mark"
+                    android:layout_width="161dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/button"
+                    android:text="@string/title_itog_mark"
+                    tools:ignore="MissingConstraints" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tinformation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:id="@+id/imageView12"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/information"
+                    tools:ignore="MissingConstraints" />
+
+                <Button
+                    android:id="@+id/information"
+                    android:layout_width="161dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/button"
+                    android:text="@string/title_information" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tre_akkaunt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    app:srcCompat="@drawable/re_akkaunt"
+                    tools:ignore="MissingConstraints" />
+                <Button
+                    android:id="@+id/re_akkaunt"
+                    android:layout_width="161dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/button"
+                    android:text="@string/title_re_akkaunt"
+                    tools:ignore="MissingConstraints" />
+            </TableRow>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
