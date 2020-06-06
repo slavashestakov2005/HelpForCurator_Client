@@ -26,13 +26,13 @@
             android:name=".mainmenu.InformationActivity"
             android:label="@string/title_information" />
         <activity
-            android:name=".mainmenu.Itog_markActivity"
+            android:name=".mainmenu.ItogMarkActivity"
             android:label="@string/title_itog_mark" />
         <activity android:name=".mainmenu.MenuActivity" />
         <activity
             android:name=".mainmenu.OlimpsActivity"
             android:label="@string/title_olimps" />
-        <activity android:name=".mainmenu.Re_akkauntActivity" />
+        <activity android:name=".mainmenu.ReAccountActivity" />
         <activity
             android:name=".mainmenu.SendActivity"
             android:label="@string/title_messages" />
@@ -40,7 +40,7 @@
             android:name=".mainmenu.TeachersActivity"
             android:label="@string/title_teachers" />
         <activity
-            android:name=".mainmenu.Time_tableActivity"
+            android:name=".mainmenu.TimeTableActivity"
             android:label="@string/title_time_table" />
         <activity
             android:name=".mainmenu.UspevaemostActivity"

@@ -1,3 +1,7 @@
+/**
+ * Класс для хранения данных о текущем чате.
+ * **/
+
 package com.example.helpforcurator.help;
 
 public class CurrentChat {

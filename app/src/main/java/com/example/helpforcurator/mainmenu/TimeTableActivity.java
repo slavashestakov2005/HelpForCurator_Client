@@ -1,3 +1,8 @@
+/**
+ * Активность с рассписанием.
+ * Пока пустая.
+ * **/
+
 package com.example.helpforcurator.mainmenu;
 
 import android.os.Bundle;
@@ -9,19 +14,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.helpforcurator.R;
 
-public class Time_tableActivity extends AppCompatActivity {
-    Button exit;
+public class TimeTableActivity extends AppCompatActivity {
+    /** view элемненты **/
+    private Button exit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /** получение view **/
         setContentView(R.layout.activity_time_table);
         exit = (Button) findViewById(R.id.exit);
+        /** обработка нажатий **/
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        /** изменение шапки **/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

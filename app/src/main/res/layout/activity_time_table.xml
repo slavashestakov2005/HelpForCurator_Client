@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/time_table_a"
-    tools:context=".mainmenu.Time_tableActivity">
+    tools:context=".mainmenu.TimeTableActivity">
 
     <Button
         android:id="@+id/exit"

@@ -1,3 +1,11 @@
+/**
+ * Стартовая активность. Имеет три кнопки:
+ * 1. "Регистрация" (input.RegistrationActivity).
+ * 2. "Вход" (input.LoginActivity).
+ * 3. "Получение списка пользователей" (AllUsersActivity).
+ * Есть временное поле для ввода ip (на время локального сервера).
+ * **/
+
 package com.example.helpforcurator;
 
 import android.content.Intent;
@@ -13,15 +21,18 @@ import com.example.helpforcurator.input.LoginActivity;
 import com.example.helpforcurator.input.RegustrationActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private Button login, signin, allusers;
+    /** view элемненты **/
+    private Button login, signIn, allusers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /** получение view **/
         setContentView(R.layout.activity_main);
         login = (Button) findViewById(R.id.login);
-        signin = (Button) findViewById(R.id.signin);
+        signIn = (Button) findViewById(R.id.signin);
         allusers = (Button) findViewById(R.id.listofuser);
+        /** обработка нажатий **/
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -30,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        signin.setOnClickListener(new View.OnClickListener() {
+        signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RegustrationActivity.class);

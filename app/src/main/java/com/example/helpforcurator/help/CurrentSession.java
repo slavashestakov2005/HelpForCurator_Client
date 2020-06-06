@@ -1,3 +1,7 @@
+/**
+ * Класс для хранения данных о текущем пользователе.
+ * **/
+
 package com.example.helpforcurator.help;
 
 import java.util.ArrayList;

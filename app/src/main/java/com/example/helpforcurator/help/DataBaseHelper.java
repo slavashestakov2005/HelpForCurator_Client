@@ -1,3 +1,8 @@
+/**
+ * Вспомогательный класс для соединения с локальной базой данных.
+ * Взят с какого-то сайта полностью.
+ * **/
+
 package com.example.helpforcurator.help;
 
 import android.content.Context;

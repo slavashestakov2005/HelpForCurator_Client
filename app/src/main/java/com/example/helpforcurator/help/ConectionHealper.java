@@ -1,6 +1,9 @@
-package com.example.helpforcurator.help;
+/**
+ * Вспомогательный класс для соединения с сервером.
+ * Взят с какого-то сайта полностью.
+ * **/
 
-import android.util.Log;
+package com.example.helpforcurator.help;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +33,6 @@ public class ConectionHealper {
         HttpURLConnection urlConnection = null;
         try {
             url = new URL(requestURL + "?" + getDataString(getDataParams));
-            Log.i("URL", requestURL + "?" + getDataString(getDataParams));
             urlConnection = (HttpURLConnection) url.openConnection();
             int responseCode = urlConnection.getResponseCode();
             if(responseCode == HttpURLConnection.HTTP_OK){
@@ -43,7 +45,6 @@ public class ConectionHealper {
                 urlConnection.disconnect();
             }
         }
-        Log.i("URL", response);
         return response;
     }
 
@@ -55,7 +56,6 @@ public class ConectionHealper {
                 first = false;
             else
                 result.append("&");
-
             result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
             result.append("=");
             result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));

@@ -1,3 +1,7 @@
+/**
+ * Класс для отображения одного чата в списке.
+ * **/
+
 package com.example.helpforcurator.help;
 
 public class ChatItem {

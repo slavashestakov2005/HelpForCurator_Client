@@ -1,3 +1,8 @@
+/**
+ * SelectionPageAdapter (extends FragmentPagerAdapter) для активности mainmenu.NameActivity.
+ * Нужен для переключения между Tab.
+ * **/
+
 package com.example.helpforcurator.name;
 
 import android.content.Context;
@@ -10,10 +15,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.helpforcurator.R;
 
-/**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
@@ -27,8 +28,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
         switch(position){
             case 0 : return new Tab1();
             case 1 : return new Tab2();

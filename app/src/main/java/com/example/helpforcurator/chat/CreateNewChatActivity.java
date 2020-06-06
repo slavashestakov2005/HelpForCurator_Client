@@ -1,3 +1,8 @@
+/**
+ * Активность для добавления нового чата.
+ * Есть только настройка имени.
+ * **/
+
 package com.example.helpforcurator.chat;
 
 import android.content.Intent;
@@ -20,17 +25,20 @@ import com.example.helpforcurator.help.CurrentSession;
 import java.util.HashMap;
 
 public class CreateNewChatActivity extends AppCompatActivity {
-    EditText name;
-    TextView errors;
-    Button create;
+    /** view элемненты **/
+    private EditText name;
+    private TextView errors;
+    private Button create;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /** получение view **/
         setContentView(R.layout.activity_create_new_chat);
         name = (EditText) findViewById(R.id.name);
         errors = (TextView) findViewById(R.id.errors);
         create = (Button) findViewById(R.id.create_chat);
+        /** обработка нажатий **/
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +51,7 @@ public class CreateNewChatActivity extends AppCompatActivity {
                 }
             }
         });
+        /** изменение шапки **/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -55,6 +64,7 @@ public class CreateNewChatActivity extends AppCompatActivity {
         }
     }
 
+    /** AsyncTask для создания нового чата **/
     class CreateChatAsyncTask extends AsyncTask<String, String, String> {
         String _name;
         String answer, server = ConectionHealper.getUrl() + "/create_chat";
@@ -79,18 +89,18 @@ public class CreateNewChatActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String res) {
             super.onPostExecute(res);
-            /** Создано ! **/
             if (answer.equals("error")){
                 name.setBackgroundColor(getColor(R.color.error));
                 errors.setText("Чат уже существует");
             }
             else{
-                Toast.makeText(getApplicationContext(), "Чат создан " + answer + "!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Чат создан с номером " + answer, Toast.LENGTH_SHORT).show();
                 new InsertToChatAsyncTask(CurrentSession.getUserId(), Integer.parseInt(answer), _name).execute();
             }
         }
     }
 
+    /** AsyncTask для добавления себя в чат при удочном создании нового чата **/
     class InsertToChatAsyncTask extends AsyncTask<String, String, String> {
         int _user_id, _chat_id;
         String _chat_name;
@@ -119,7 +129,7 @@ public class CreateNewChatActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String res) {
             super.onPostExecute(res);
-            Toast.makeText(getApplicationContext(), "Добавлены в чат № " + _chat_id, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Вы добавлены", Toast.LENGTH_SHORT).show();
             CurrentChat.setChatName(_chat_name);
             CurrentChat.setId_chat(_chat_id);
             Intent intent = new Intent(CreateNewChatActivity.this, ChatActivity.class);

@@ -1,3 +1,11 @@
+/**
+ * Активность со списком чатов.
+ * Каждый чат ведёт в chat.ChatActivity.
+ * FAB со знаком "+" ведёт chat.CreateNewChatActivity.
+ * Здесь работает ресивер UPDATE_LIST_CHAT.
+ * Работа ресивера отображается в Log.i.FONE.
+ * **/
+
 package com.example.helpforcurator.mainmenu;
 
 import android.content.BroadcastReceiver;
@@ -32,17 +40,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SendActivity extends AppCompatActivity {
-    FloatingActionButton create_chat;
-    ListView listChat;
-    List<ChatItem> data;
-    ChatListAdapter adapter;
-    UpdateReceiver upd_res;
+    /** view элемненты **/
+    private FloatingActionButton create_chat;
+    private ListView listChat;
+    private List<ChatItem> data;
+    private ChatListAdapter adapter;
+    /** ресивер **/
+    private UpdateReceiver upd_res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        data = new ArrayList<>();
+        /** получение view **/
         setContentView(R.layout.activity_send);
         create_chat = (FloatingActionButton) findViewById(R.id.create_chat);
+        listChat = (ListView) findViewById(R.id.chat_list);
+        /** обработка нажатий **/
         create_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,36 +64,26 @@ public class SendActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // Создаём и регистрируем широковещательный приёмник
-        upd_res = new UpdateReceiver();
-        registerReceiver(upd_res, new IntentFilter("com.example.helpforcurator.action.UPDATE_LIST_CHAT"));
-        if(!UsersTable.contain(FoneService.localDB, CurrentSession.getUserId())){
-            UsersTable.insertUser(FoneService.localDB, CurrentSession.getUserId(), CurrentSession.getName(), CurrentSession.getSurname());
-            CurrentSession.setChatTimeUpdate("0");
-        }
-        else{
-            Cursor cursor = UsersTable.select(FoneService.localDB, CurrentSession.getUserId());
-            cursor.moveToFirst();
-            CurrentSession.setChatTimeUpdate(cursor.getString(UsersTable.INDEX_TIME));
-        }
-        // шапка
+        /** создаём ресивер UPDATE_LIST_CHAT **/
+        createReceiver();
+        insertSessionToDataBase();
+        /** изменение шапки **/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void onStart() {
-        // список чатов
-        data = new ArrayList<>();
-        getData(data);  // сначала загрузим из БД
-        listChat = (ListView) findViewById(R.id.chat_list);
-        adapter = new ChatListAdapter(this, data);
+        /** создаём список чатов с адаптером **/
+        getData(data);
+        adapter = new ChatListAdapter(getApplicationContext(), data);
         listChat.setAdapter(adapter);
+        /** обработка нажатия на чат **/
         listChat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 Object o = listChat.getItemAtPosition(position);
                 ChatItem item = (ChatItem) o;
-                Toast.makeText(getApplicationContext(), "Selected :" + " " + item, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Selected : " + item, Toast.LENGTH_LONG).show();
                 CurrentChat.setChatName(item.getName());
                 CurrentChat.setId_chat(item.getId_chat());
                 Intent intent = new Intent(SendActivity.this, ChatActivity.class);
@@ -92,26 +96,22 @@ public class SendActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        /** удаляем ресивер **/
         unregisterReceiver(upd_res);
     }
 
-    private void create_lv() {
-        getData(data);
-        adapter.notifyDataSetChanged();
-    }
-
+    /** метод для загрузки списка чатов из локальной БД **/
     private void getData(List<ChatItem> data) {
         data.clear();
-        // получим список чатов
         Cursor chats = ChatUserTable.select(FoneService.localDB, CurrentSession.getUserId());
         if (chats == null || chats.getCount() == 0) return;
         chats.moveToFirst();
         while (!chats.isAfterLast()){
             // получаем по ID имя
             final int id_chat = chats.getInt(0);
-            Cursor cursor2 = ChatsTable.select(FoneService.localDB, id_chat);
-            cursor2.moveToFirst();
-            final String name = cursor2.getString(ChatsTable.INDEX_NAME);
+            Cursor cursor = ChatsTable.select(FoneService.localDB, id_chat);
+            cursor.moveToFirst();
+            final String name = cursor.getString(ChatsTable.INDEX_NAME);
             data.add(new ChatItem(id_chat, name));
             chats.moveToNext();
         }
@@ -129,8 +129,30 @@ public class SendActivity extends AppCompatActivity {
     public class UpdateReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i("TAG", "FoneProcess нашёл новый чат");
-            create_lv();
+            Log.i("FONE", "FoneProcess нашёл новый чат");
+            updateList();
         }
+    }
+
+    private void createReceiver(){
+        upd_res = new UpdateReceiver();
+        registerReceiver(upd_res, new IntentFilter("com.example.helpforcurator.action.UPDATE_LIST_CHAT"));
+    }
+
+    private void insertSessionToDataBase(){
+        if(!UsersTable.contain(FoneService.localDB, CurrentSession.getUserId())){
+            UsersTable.insertUser(FoneService.localDB, CurrentSession.getUserId(), CurrentSession.getName(), CurrentSession.getSurname());
+            CurrentSession.setChatTimeUpdate("0");
+        }
+        else{
+            Cursor cursor = UsersTable.select(FoneService.localDB, CurrentSession.getUserId());
+            cursor.moveToFirst();
+            CurrentSession.setChatTimeUpdate(cursor.getString(UsersTable.INDEX_TIME));
+        }
+    }
+
+    private void updateList(){
+        getData(data);
+        adapter.notifyDataSetChanged();
     }
 }

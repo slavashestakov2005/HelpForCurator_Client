@@ -1,3 +1,8 @@
+/**
+ * Активность с итоговыми оценками.
+ * Пока пустая.
+ * **/
+
 package com.example.helpforcurator.mainmenu;
 
 import android.os.Bundle;
@@ -9,19 +14,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.helpforcurator.R;
 
-public class Itog_markActivity extends AppCompatActivity {
-    Button exit;
+public class ItogMarkActivity extends AppCompatActivity {
+    /** view элемненты **/
+    private Button exit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /** получение view **/
         setContentView(R.layout.activity_itog_marc);
         exit = (Button) findViewById(R.id.exit);
+        /** обработка нажатий **/
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        /** изменение шапки **/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

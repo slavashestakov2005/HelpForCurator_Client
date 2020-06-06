@@ -1,3 +1,7 @@
+/**
+ * Класс для отображения своих сообщений в активности chat.ChatActivity.
+ * **/
+
 package com.example.helpforcurator.chat;
 
 import android.content.Context;
@@ -9,10 +13,12 @@ import com.example.helpforcurator.R;
 import com.example.helpforcurator.help.CurrentSession;
 
 public class MyMessage extends RelativeLayout {
-    TextView author, text, time;
+    /** view элемненты **/
+    private TextView author, text, time;
 
     public MyMessage(Context context) {
         super(context);
+        /** получение view **/
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.my_message, this);
         author = (TextView) findViewById(R.id.message_author);

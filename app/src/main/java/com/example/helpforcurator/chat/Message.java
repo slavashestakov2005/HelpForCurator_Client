@@ -1,8 +1,11 @@
+/**
+ * Класс для отображения чужих сообщений в активности chat.ChatActivity.
+ * **/
+
 package com.example.helpforcurator.chat;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,10 +18,12 @@ import com.example.helpforcurator.help.tables.UsersTable;
 import java.util.HashMap;
 
 public class Message extends RelativeLayout {
-    TextView author, text, time;
+    /** view элемненты **/
+    private TextView author, text, time;
 
     public Message(Context context) {
         super(context);
+        /** получение view **/
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.message, this);
         author = (TextView) findViewById(R.id.message_author);
@@ -31,9 +36,7 @@ public class Message extends RelativeLayout {
             int n = Integer.parseInt(author_id);
             try {
                 new GetInfoAsyncTask(n).execute();
-            } catch (Exception ex){
-                Log.i("Error", ex.getStackTrace().toString());
-            }
+            } catch (Exception ex){}
         }catch (NumberFormatException ex){
             author.setText(author_id);
         }
@@ -47,12 +50,13 @@ public class Message extends RelativeLayout {
         time.setText(_time);
     }
 
+    /** AsyncTask для получения информации о пользователе, если раньше он нам ничего не отправлял **/
     class GetInfoAsyncTask extends AsyncTask<String, String, String> {
-        int id_user;
+        int _id_user;
         String answer, server = ConectionHealper.getUrl() + "/get_user_info";
 
-        public GetInfoAsyncTask(int id_user) {
-            this.id_user = id_user;
+        public GetInfoAsyncTask(int _id_user) {
+            this._id_user = _id_user;
         }
 
         @Override
@@ -63,17 +67,17 @@ public class Message extends RelativeLayout {
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
-            postDataParams.put("id", "" + id_user);
+            postDataParams.put("id", "" + _id_user);
             answer = ConectionHealper.performGetCall(server, postDataParams);
             return null;
         }
 
         @Override
         protected void onPostExecute(String res) {
-            // узнали человека -> изменем view и добавить в БД
+            /** Добавление результата в локальную БД и в view, при удачном исходе. **/
             if (answer == null || answer.equals("")) return;
             String mas[] = answer.split(" \\| ");
-            UsersTable.insertUser(FoneService.localDB, id_user, mas[0], mas[1]);
+            UsersTable.insertUser(FoneService.localDB, _id_user, mas[0], mas[1]);
             author.setText(mas[1] + " " + mas[0]);
             super.onPostExecute(res);
         }

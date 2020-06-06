@@ -1,3 +1,10 @@
+/**
+ * Активность чата.
+ * По нажатию "Настройки" сверху переходим в chat.ChatSettingsActivity.
+ * Здесь работает ресивер UPDATE_CHAT.
+ * Работа ресивера отображается в Log.i.FONE.
+ * **/
+
 package com.example.helpforcurator.chat;
 
 import android.content.BroadcastReceiver;
@@ -30,21 +37,24 @@ import com.example.helpforcurator.help.tables.UsersTable;
 import java.util.HashMap;
 
 public class ChatActivity extends AppCompatActivity {
+    /** view элемненты **/
     private LinearLayout container;
     private MyMessage myMessage = null;
     private Message message = null;
-    EditText text;
-    Button send;
-    UpdateReceiver upd_res;
+    private EditText text;
+    private Button send;
+    /** ресивер **/
+    private UpdateReceiver upd_res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /** получение view **/
         setContentView(R.layout.activity_chat);
-        /** views **/
         container = (LinearLayout) findViewById(R.id.layout);
         text = (EditText) findViewById(R.id.text);
         send = (Button) findViewById(R.id.send);
+        /** обработка нажатий **/
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,12 +65,11 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-        // Создаём и регистрируем широковещательный приёмник
-        upd_res = new UpdateReceiver();
-        registerReceiver(upd_res, new IntentFilter("com.example.helpforcurator.action.UPDATE_Chat"));
+        /** создаём ресивер UPDATE_CHAT **/
+        createReceiver();
     }
 
-    public void create_lv(){
+    public void updateList(){
         container.removeAllViews();
         Cursor messages = MessagesTable.selectAll(FoneService.localDB, CurrentChat.getId_chat());
         if (messages == null || messages.getCount() == 0) return;
@@ -106,13 +115,14 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        create_lv();
+        updateList();
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        /** удаляем ресивер **/
         unregisterReceiver(upd_res);
     }
 
@@ -146,15 +156,16 @@ public class ChatActivity extends AppCompatActivity {
         if (result != null && result.equals("exit")) finish();
     }
 
+    /** AsyncTask для отправки сообщений **/
     class SendMessageAsyncTask extends AsyncTask<String, String, String> {
-        int id_chat, id_author;
+        int _id_chat, _id_author;
         String _text, _name_chat;
         String answer, server = ConectionHealper.getUrl() + "/send";
 
-        public SendMessageAsyncTask(int id_chat, String _name_chat, int id_author, String _text) {
-            this.id_chat = id_chat;
+        public SendMessageAsyncTask(int _id_chat, String _name_chat, int _id_author, String _text) {
+            this._id_chat = _id_chat;
             this._name_chat = _name_chat;
-            this.id_author = id_author;
+            this._id_author = _id_author;
             this._text = _text;
         }
 
@@ -166,8 +177,8 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
-            postDataParams.put("id_chat", "" + id_chat);
-            postDataParams.put("id_author", "" + id_author);
+            postDataParams.put("id_chat", "" + _id_chat);
+            postDataParams.put("id_author", "" + _id_author);
             postDataParams.put("text", _text);
             answer = ConectionHealper.performGetCall(server, postDataParams);
             return null;
@@ -182,8 +193,13 @@ public class ChatActivity extends AppCompatActivity {
     public class UpdateReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i("TAG", "FoneProcess нашёл новые сообщения");
-            create_lv();
+            Log.i("FONE", "FoneProcess нашёл новые сообщения");
+            updateList();
         }
+    }
+
+    private void createReceiver(){
+        upd_res = new UpdateReceiver();
+        registerReceiver(upd_res, new IntentFilter("com.example.helpforcurator.action.UPDATE_CHAT"));
     }
 }

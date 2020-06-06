@@ -1,3 +1,8 @@
+/**
+ * Активность с оценками.
+ * Пока пустая.
+ * **/
+
 package com.example.helpforcurator.mainmenu;
 
 import android.os.Bundle;
@@ -10,18 +15,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.helpforcurator.R;
 
 public class UspevaemostActivity extends AppCompatActivity {
-    Button exit;
+    /** view элемненты **/
+    private Button exit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /** получение view **/
         setContentView(R.layout.activity_uspevaemost);
         exit = (Button) findViewById(R.id.exit);
+        /** обработка нажатий **/
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        /** изменение шапки **/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

@@ -1,3 +1,11 @@
+/**
+ * Tab (extends Fragment) для активности mainmenu.NameActivity.
+ * Здесь располагается и редактируется информация про:
+ * 1. Телефон
+ * 2. Email
+ * Сохраняется кнопкой "Сохранить"
+ * **/
+
 package com.example.helpforcurator.name;
 
 import android.graphics.Color;
@@ -20,29 +28,30 @@ import com.example.helpforcurator.R;
 import java.util.HashMap;
 
 public class Tab2 extends Fragment {
-    EditText phone, email;
-    Button save;
-    TextView errors;
+    /** view элемненты **/
+    private EditText phone, email;
+    private Button save;
+    private TextView errors;
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        /** получение view **/
         View root = inflater.inflate(R.layout.tab2, container, false);
         phone = (EditText) root.findViewById(R.id.phone);
         email = (EditText) root.findViewById(R.id.email);
         errors = (TextView) root.findViewById(R.id.errors);
         save = (Button) root.findViewById(R.id.save);
-        phone.setText(CurrentSession.getPhone());
-        email.setText(CurrentSession.getEmail());
+        /** обработка нажатий **/
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String s = phone.getText().toString();
-                String s2 = email.getText().toString();
-                if (!s.equals("")) {
+                String s1 = phone.getText().toString().trim(),
+                        s2 = email.getText().toString().trim();
+                if (!s1.equals("")) {
                     if (!s2.equals("")){
-                        new Update2AsyncTask().execute();
+                        new UpdateAsyncTask().execute();
                         phone.setBackgroundColor(Color.parseColor("#ffffff"));
                         email.setBackgroundColor(Color.parseColor("#ffffff"));
                         errors.setText("");
@@ -63,6 +72,7 @@ public class Tab2 extends Fragment {
 
     @Override
     public void onResume() {
+        /** создание исходного внешнего вида **/
         phone.setBackgroundColor(Color.parseColor("#ffffff"));
         email.setBackgroundColor(Color.parseColor("#ffffff"));
         phone.setText(CurrentSession.getPhone());
@@ -71,10 +81,14 @@ public class Tab2 extends Fragment {
         super.onResume();
     }
 
-    class Update2AsyncTask extends AsyncTask<String, String, String> {
+    /** AsyncTask для обновления данных пользователя **/
+    class UpdateAsyncTask extends AsyncTask<String, String, String> {
+        int _id;
         String _phone, _email, answer, server = ConectionHealper.getUrl() + "/update";
+
         @Override
         protected void onPreExecute() {
+            _id = CurrentSession.getUserId();
             _phone = phone.getText().toString();
             _email = email.getText().toString();
             super.onPreExecute();
@@ -83,7 +97,7 @@ public class Tab2 extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
-            postDataParams.put("id", "" + CurrentSession.getUserId());
+            postDataParams.put("id", "" + _id);
             postDataParams.put("type", "contacts");
             postDataParams.put("phone", _phone);
             postDataParams.put("email", _email);

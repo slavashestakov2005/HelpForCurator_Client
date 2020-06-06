@@ -1,3 +1,12 @@
+/**
+ * Tab (extends Fragment) для активности mainmenu.NameActivity.
+ * Здесь располагается и редактируется информация про:
+ * 1. Фамилию
+ * 2. Имя
+ * 3. Отчество
+ * Сохраняется кнопкой "Сохранить"
+ * **/
+
 package com.example.helpforcurator.name;
 
 import android.graphics.Color;
@@ -20,52 +29,54 @@ import com.example.helpforcurator.R;
 import java.util.HashMap;
 
 public class Tab1 extends Fragment {
-    EditText name, surname, middlename;
-    Button save;
-    TextView errors;
+    /** view элемненты **/
+    private EditText name, surname, middleName;
+    private Button save;
+    private TextView errors;
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        /** получение view **/
         View root = inflater.inflate(R.layout.tab1, container, false);
         name = (EditText) root.findViewById(R.id.name);
         surname = (EditText) root.findViewById(R.id.surname);
-        middlename = (EditText) root.findViewById(R.id.middlename);
+        middleName = (EditText) root.findViewById(R.id.middlename);
         errors = (TextView) root.findViewById(R.id.errors);
         save = (Button) root.findViewById(R.id.save);
-        name.setText(CurrentSession.getName());
-        surname.setText(CurrentSession.getSurname());
-        middlename.setText(CurrentSession.getMiddlename());
+        /** обработка нажатий **/
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String s1 = surname.getText().toString(), s2 = name.getText().toString(), s3 = middlename.getText().toString();
+                String s1 = surname.getText().toString().trim(),
+                        s2 = name.getText().toString().trim(),
+                        s3 = middleName.getText().toString().trim();
                 if (!s2.equals("")) {
                     if (!s1.equals("")) {
                         if (!s3.equals("")) {
-                            new Update1AsyncTask().execute();
+                            new UpdateAsyncTask().execute();
                             name.setBackgroundColor(Color.parseColor("#ffffff"));
                             surname.setBackgroundColor(Color.parseColor("#ffffff"));
-                            middlename.setBackgroundColor(Color.parseColor("#ffffff"));
+                            middleName.setBackgroundColor(Color.parseColor("#ffffff"));
                             errors.setText("");
                         } else {
                             surname.setBackgroundColor(Color.parseColor("#ffffff"));
                             name.setBackgroundColor(Color.parseColor("#ffffff"));
-                            middlename.setBackgroundColor(Color.rgb(241, 86, 94));
+                            middleName.setBackgroundColor(Color.rgb(241, 86, 94));
                             errors.setText("Пустое отчество запрещено");
                         }
                     } else {
                         name.setBackgroundColor(Color.parseColor("#ffffff"));
                         surname.setBackgroundColor(Color.rgb(241, 86, 94));
-                        middlename.setBackgroundColor(Color.parseColor("#ffffff"));
+                        middleName.setBackgroundColor(Color.parseColor("#ffffff"));
                         errors.setText("Пустая фамилия запрещена");
                     }
 
                 } else {
                     name.setBackgroundColor(Color.rgb(241, 86, 94));
                     surname.setBackgroundColor(Color.parseColor("#ffffff"));
-                    middlename.setBackgroundColor(Color.parseColor("#ffffff"));
+                    middleName.setBackgroundColor(Color.parseColor("#ffffff"));
                     errors.setText("Пустое имя запрещено");
                 }
             }
@@ -75,34 +86,39 @@ public class Tab1 extends Fragment {
 
     @Override
     public void onResume() {
+        /** создание исходного внешнего вида **/
         name.setBackgroundColor(Color.parseColor("#ffffff"));
         surname.setBackgroundColor(Color.parseColor("#ffffff"));
-        middlename.setBackgroundColor(Color.parseColor("#ffffff"));
+        middleName.setBackgroundColor(Color.parseColor("#ffffff"));
         name.setText(CurrentSession.getName());
         surname.setText(CurrentSession.getSurname());
-        middlename.setText(CurrentSession.getMiddlename());
+        middleName.setText(CurrentSession.getMiddlename());
         errors.setText("");
         super.onResume();
     }
 
-    class Update1AsyncTask extends AsyncTask<String, String, String> {
-        String _name, _surname, _middlename, answer, server = ConectionHealper.getUrl() + "/update";
+    /** AsyncTask для обновления данных пользователя **/
+    class UpdateAsyncTask extends AsyncTask<String, String, String> {
+        int _id;
+        String _name, _surname, _middleName, answer, server = ConectionHealper.getUrl() + "/update";
+
         @Override
         protected void onPreExecute() {
+            _id = CurrentSession.getUserId();
             _name = name.getText().toString();
             _surname = surname.getText().toString();
-            _middlename = middlename.getText().toString();
+            _middleName = middleName.getText().toString();
             super.onPreExecute();
         }
 
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
-            postDataParams.put("id", "" + CurrentSession.getUserId());
+            postDataParams.put("id", "" + _id);
             postDataParams.put("type", "name");
             postDataParams.put("name", _name);
             postDataParams.put("surname", _surname);
-            postDataParams.put("middlename", _middlename);
+            postDataParams.put("middlename", _middleName);
             answer = ConectionHealper.performGetCall(server, postDataParams);
             return null;
         }
@@ -112,10 +128,10 @@ public class Tab1 extends Fragment {
             super.onPostExecute(res);
             CurrentSession.setName(_name);
             CurrentSession.setSurname(_surname);
-            CurrentSession.setMiddlename(_middlename);
+            CurrentSession.setMiddlename(_middleName);
             name.setText(_name);
             surname.setText(_surname);
-            middlename.setText(_middlename);
+            middleName.setText(_middleName);
         }
     }
 }

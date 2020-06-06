@@ -1,3 +1,13 @@
+/**
+ * Класс фонового сервиса.
+ * За основу взят пример с habr.
+ * Этот класс:
+ * 1. Обновляет список сообщений текущего чата (.../messages_chat_after и UPDATE_CHAT).
+ * 2. Обновляет список чатов текущего пользователя. (.../get_chats и UPDATE_LIST_CHAT).
+ * 3. Спит 15 секунд и заново отправляет запросы на сервер.
+ * Также он изменяет время отправки сообщений с мс. в привычный вид "dd.mm.yyyy hh.mm".
+ * **/
+
 package com.example.helpforcurator.help;
 
 import android.annotation.TargetApi;
@@ -41,7 +51,7 @@ public class FoneService extends Service {
     }
 
     public void onStart(Intent intent, int startId) {
-        // подключим БД
+        /** Подключение к локальной БД **/
         if (localDB == null) {
             DataBaseHelper mDBHelper = new DataBaseHelper(this);
             try {
@@ -55,7 +65,7 @@ public class FoneService extends Service {
                 throw mSQLException;
             }
         }
-        // создадим notification и его показ в трее
+        /** Создание notification и его показ в трее**/
         String channel;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             channel = createChannel();
@@ -82,7 +92,7 @@ public class FoneService extends Service {
         startLoop();
     }
 
-    // регистрация процесса в API 26+ (Android 8.0+)
+    /** Регистрация процесса, если API 26+ (Android 8.0+) **/
     @NonNull
     @TargetApi(26)
     private synchronized String createChannel() {
@@ -100,19 +110,14 @@ public class FoneService extends Service {
         return "snap map channel";
     }
 
-    // запуск потока, внутри которого будет происходить
-    // регулярное соединение с сервером для чтения новых сообщений.
-    // если сообщения найдены - отправим броадкаст для обновления
-    // ListView в ChatActivity
-
+    /** Поток обращенй к серверу **/
     private void startLoop() {
         thr = new Thread(new Runnable() {
             String answer;
             public void run() {
-                while (CurrentSession.isProgramStart()) { // стартуем бесконечный цикл
-                    getMessagesInChat();    // обновить список сообщений (текущий чат)
-                    getChats();             // обновить список чатов
-                    // подождать
+                while (CurrentSession.isProgramStart()) {
+                    getMessagesInChat();
+                    getChats();
                     try {
                         Thread.sleep(15000);
                     } catch (Exception e) {}
@@ -126,18 +131,18 @@ public class FoneService extends Service {
                 final StringBuilder builder = new StringBuilder();
                 int time = calendar.get(calendar.DAY_OF_MONTH);
                 if (time < 10) builder.append("0");
-                builder.append("" + time + ".");
+                builder.append(time).append(".");
                 time = calendar.get(calendar.MONTH) + 1;
                 if (time < 10) builder.append("0");
-                builder.append("" + time + ".");
+                builder.append(time).append(".");
                 time = calendar.get(calendar.YEAR);
-                builder.append("" + time + " ");
+                builder.append(time).append(" ");
                 time = calendar.get(calendar.AM_PM) * 12 + calendar.get(calendar.HOUR);
                 if (time < 10) builder.append("0");
-                builder.append("" + time + ".");
+                builder.append(time).append(".");
                 time = calendar.get(calendar.MINUTE);
                 if (time < 10) builder.append("0");
-                builder.append("" + time);
+                builder.append(time);
                 return builder.toString();
             }
 
@@ -194,7 +199,7 @@ public class FoneService extends Service {
                         MessagesTable.insertMessage(localDB, id_chat, id_user, text, convertTime(time));
                     }
                     // обновить view
-                    if (mas.length > 1) sendBroadcast(new Intent("com.example.helpforcurator.action.UPDATE_Chat"));
+                    if (mas.length > 1) sendBroadcast(new Intent("com.example.helpforcurator.action.UPDATE_CHAT"));
                 }
             }
 

@@ -1,5 +1,10 @@
-package com.example.helpforcurator.help;
+/**
+ * Адаптер для списка чатов.
+ * Превращает массив ChatItem в ListView чатов.
+ * Сейчас адаптер слишком прост и может быть заменён встроенным.
+ * **/
 
+package com.example.helpforcurator.help;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +18,7 @@ import com.example.helpforcurator.R;
 import java.util.List;
 
 public class ChatListAdapter extends BaseAdapter {
-
+    /** Данные адаптера **/
     private List<ChatItem> listData;
     private LayoutInflater layoutInflater;
     private Context context;
@@ -49,13 +54,12 @@ public class ChatListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
         ChatItem chatItem = this.listData.get(position);
         holder.name.setText(chatItem.getName());
-
         return convertView;
     }
 
+    /** Представление одного элемента **/
     static class ViewHolder {
         TextView name;
     }

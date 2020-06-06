@@ -1,3 +1,8 @@
+/**
+ * Временная активность.
+ * По ней можно проверить подключение к серверу путём получения списка всех пользователей
+ * **/
+
 package com.example.helpforcurator;
 
 import android.os.AsyncTask;
@@ -11,18 +16,23 @@ import com.example.helpforcurator.help.ConectionHealper;
 import java.util.HashMap;
 
 public class AllUsersActivity extends AppCompatActivity {
-    TextView textView;
+    /** view элементы **/
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /** получение view **/
         setContentView(R.layout.activity_all_users);
         textView = (TextView) findViewById(R.id.text);
+        /** AsyncTask обращение к серверу **/
         new ShowAllUsersAsyncTask().execute();
     }
 
+    /** AsyncTask для получения списка пользователей **/
     class ShowAllUsersAsyncTask extends AsyncTask<String, String, String> {
         String answer, server = ConectionHealper.getUrl() + "/all";
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

@@ -1,7 +1,11 @@
+/**
+ * Активность с главным меню.
+ * Потом можно заменить на NavigationActivity.
+ * **/
+
 package com.example.helpforcurator.mainmenu;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -16,89 +20,88 @@ import com.example.helpforcurator.help.CurrentSession;
 import com.example.helpforcurator.help.FoneService;
 
 public class MenuActivity extends AppCompatActivity {
-    TableRow tname, ttime_table, ttechers, tuspevaemost, tsend, titog_mark, tinformation, tolimps, tre_akkaunt;
-    Button name, time_table, techers, uspevaemost, send, itog_mark, information, olimps, re_akkaunt;
-    TextView text;
+    /** view элемненты **/
+    private TableRow t_name, t_timeTable, t_teachers, t_uspevaemost, t_send, t_itogMark, t_information, t_olimps, t_reAccount;
+    private Button name, timeTable, teachers, uspevaemost, send, itogMark, information, olimps, reAccount;
+    private TextView text;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /** создание фонового процесса-сервиса **/
+        createBackgroundProcess();
+        /** получение view **/
         setContentView(R.layout.activity_menu);
-        CurrentSession.setProgramStart(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(this, FoneService.class));
-        } else {
-            startService(new Intent(this, FoneService.class));
-        }
         name = (Button) findViewById(R.id.name);
-        time_table = (Button) findViewById(R.id.time_table);
-        techers = (Button) findViewById(R.id.techers);
+        timeTable = (Button) findViewById(R.id.time_table);
+        teachers = (Button) findViewById(R.id.techers);
         uspevaemost = (Button) findViewById(R.id.uspevaemost);
         send = (Button) findViewById(R.id.send);
-        itog_mark = (Button) findViewById(R.id.itog_mark);
+        itogMark = (Button) findViewById(R.id.itog_mark);
         information = (Button) findViewById(R.id.information);
         olimps = (Button) findViewById(R.id.olimp);
-        re_akkaunt = (Button) findViewById(R.id.re_akkaunt);
-        /*********************Table rows**********************************/
-        tname = (TableRow) findViewById(R.id.tname);
-        ttime_table = (TableRow) findViewById(R.id.ttime_table);
-        ttechers = (TableRow) findViewById(R.id.ttechers);
-        tuspevaemost = (TableRow) findViewById(R.id.tuspevaemost);
-        tsend = (TableRow) findViewById(R.id.tsend);
-        titog_mark = (TableRow) findViewById(R.id.titog_mark);
-        tinformation = (TableRow) findViewById(R.id.tinformation);
-        tolimps = (TableRow) findViewById(R.id.tolimp);
-        tre_akkaunt = (TableRow) findViewById(R.id.tre_akkaunt);
+        reAccount = (Button) findViewById(R.id.re_akkaunt);
+        t_name = (TableRow) findViewById(R.id.tname);
+        t_timeTable = (TableRow) findViewById(R.id.ttime_table);
+        t_teachers = (TableRow) findViewById(R.id.ttechers);
+        t_uspevaemost = (TableRow) findViewById(R.id.tuspevaemost);
+        t_send = (TableRow) findViewById(R.id.tsend);
+        t_itogMark = (TableRow) findViewById(R.id.titog_mark);
+        t_information = (TableRow) findViewById(R.id.tinformation);
+        t_olimps = (TableRow) findViewById(R.id.tolimp);
+        t_reAccount = (TableRow) findViewById(R.id.tre_akkaunt);
         name.setText(CurrentSession.getSurname() + " " + CurrentSession.getName());
+        /** обработка нажатий **/
         name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 name.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tname.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_name.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, NameActivity.class);
                 startActivity(intent);
             }
         });
-        tname.setOnClickListener(new View.OnClickListener() {
+        t_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 name.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tname.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_name.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, NameActivity.class);
                 startActivity(intent);
             }
         });
-        time_table.setOnClickListener(new View.OnClickListener() {
+        timeTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                time_table.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                ttime_table.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                Intent intent = new Intent(MenuActivity.this, Time_tableActivity.class);
+                timeTable.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_timeTable.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                Intent intent = new Intent(MenuActivity.this, TimeTableActivity.class);
                 startActivity(intent);
             }
         });
-        ttime_table.setOnClickListener(new View.OnClickListener() {
+        t_timeTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                time_table.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                ttime_table.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                Intent intent = new Intent(MenuActivity.this, Time_tableActivity.class);
+                timeTable.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_timeTable.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                Intent intent = new Intent(MenuActivity.this, TimeTableActivity.class);
                 startActivity(intent);
             }
         });
-        techers.setOnClickListener(new View.OnClickListener() {
+        teachers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                techers.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                ttechers.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                teachers.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_teachers.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, TeachersActivity.class);
                 startActivity(intent);
             }
         });
-        ttechers.setOnClickListener(new View.OnClickListener() {
+        t_teachers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                techers.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                ttechers.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                teachers.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_teachers.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, TeachersActivity.class);
                 startActivity(intent);
             }
@@ -107,16 +110,16 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uspevaemost.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tuspevaemost.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_uspevaemost.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, UspevaemostActivity.class);
                 startActivity(intent);
             }
         });
-        tuspevaemost.setOnClickListener(new View.OnClickListener() {
+        t_uspevaemost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uspevaemost.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tuspevaemost.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_uspevaemost.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, UspevaemostActivity.class);
                 startActivity(intent);
             }
@@ -125,35 +128,35 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 send.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tsend.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_send.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, SendActivity.class);
                 startActivity(intent);
             }
         });
-        tsend.setOnClickListener(new View.OnClickListener() {
+        t_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 send.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tsend.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_send.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, SendActivity.class);
                 startActivity(intent);
             }
         });
-        itog_mark.setOnClickListener(new View.OnClickListener() {
+        itogMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itog_mark.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                titog_mark.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                Intent intent = new Intent(MenuActivity.this, Itog_markActivity.class);
+                itogMark.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_itogMark.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                Intent intent = new Intent(MenuActivity.this, ItogMarkActivity.class);
                 startActivity(intent);
             }
         });
-        titog_mark.setOnClickListener(new View.OnClickListener() {
+        t_itogMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itog_mark.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                titog_mark.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                Intent intent = new Intent(MenuActivity.this, Itog_markActivity.class);
+                itogMark.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_itogMark.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                Intent intent = new Intent(MenuActivity.this, ItogMarkActivity.class);
                 startActivity(intent);
             }
         });
@@ -161,16 +164,16 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 information.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tinformation.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_information.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, InformationActivity.class);
                 startActivity(intent);
             }
         });
-        tinformation.setOnClickListener(new View.OnClickListener() {
+        t_information.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 information.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tinformation.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_information.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, InformationActivity.class);
                 startActivity(intent);
             }
@@ -179,33 +182,33 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 olimps.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tolimps.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_olimps.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, OlimpsActivity.class);
                 startActivity(intent);
             }
         });
-        tolimps.setOnClickListener(new View.OnClickListener() {
+        t_olimps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 olimps.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tolimps.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_olimps.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 Intent intent = new Intent(MenuActivity.this, OlimpsActivity.class);
                 startActivity(intent);
             }
         });
-        re_akkaunt.setOnClickListener(new View.OnClickListener() {
+        reAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                re_akkaunt.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tre_akkaunt.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                reAccount.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_reAccount.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 finish();
             }
         });
-        tre_akkaunt.setOnClickListener(new View.OnClickListener() {
+        t_reAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                re_akkaunt.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
-                tre_akkaunt.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                reAccount.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
+                t_reAccount.setBackgroundColor(getResources().getColor(R.color.buttonActivity));
                 finish();
             }
         });
@@ -213,59 +216,41 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        /** создание исходного внешнего вида **/
         super.onStart();
-        /****************Buttons***************************/
-        name = (Button) findViewById(R.id.name);
         name.setBackgroundColor(getResources().getColor(R.color.button));
-        name.setTextColor(Color.BLACK);
-        time_table = (Button) findViewById(R.id.time_table);
-        time_table.setBackgroundColor(getResources().getColor(R.color.button));
-        time_table.setTextColor(Color.BLACK);
-        techers = (Button) findViewById(R.id.techers);
-        techers.setBackgroundColor(getResources().getColor(R.color.button));
-        techers.setTextColor(Color.BLACK);
-        uspevaemost = (Button) findViewById(R.id.uspevaemost);
+        timeTable.setBackgroundColor(getResources().getColor(R.color.button));
+        teachers.setBackgroundColor(getResources().getColor(R.color.button));
         uspevaemost.setBackgroundColor(getResources().getColor(R.color.button));
-        uspevaemost.setTextColor(Color.BLACK);
-        send = (Button) findViewById(R.id.send);
         send.setBackgroundColor(getResources().getColor(R.color.button));
-        send.setTextColor(Color.BLACK);
-        itog_mark = (Button) findViewById(R.id.itog_mark);
-        itog_mark.setBackgroundColor(getResources().getColor(R.color.button));
-        itog_mark.setTextColor(Color.BLACK);
-        information = (Button) findViewById(R.id.information);
+        itogMark.setBackgroundColor(getResources().getColor(R.color.button));
         information.setBackgroundColor(getResources().getColor(R.color.button));
-        information.setTextColor(Color.BLACK);
-        olimps = (Button) findViewById(R.id.olimp);
         olimps.setBackgroundColor(getResources().getColor(R.color.button));
-        olimps.setTextColor(Color.BLACK);
-        re_akkaunt = (Button) findViewById(R.id.re_akkaunt);
-        re_akkaunt.setBackgroundColor(getResources().getColor(R.color.button));
-        re_akkaunt.setTextColor(Color.BLACK);
-        /*********************Table rows**********************************/
-        tname = (TableRow) findViewById(R.id.tname);
-        tname.setBackgroundColor(getResources().getColor(R.color.button));
-        ttime_table = (TableRow) findViewById(R.id.ttime_table);
-        ttime_table.setBackgroundColor(getResources().getColor(R.color.button));
-        ttechers = (TableRow) findViewById(R.id.ttechers);
-        ttechers.setBackgroundColor(getResources().getColor(R.color.button));
-        tuspevaemost = (TableRow) findViewById(R.id.tuspevaemost);
-        tuspevaemost.setBackgroundColor(getResources().getColor(R.color.button));
-        tsend = (TableRow) findViewById(R.id.tsend);
-        tsend.setBackgroundColor(getResources().getColor(R.color.button));
-        titog_mark = (TableRow) findViewById(R.id.titog_mark);
-        titog_mark.setBackgroundColor(getResources().getColor(R.color.button));
-        tinformation = (TableRow) findViewById(R.id.tinformation);
-        tinformation.setBackgroundColor(getResources().getColor(R.color.button));
-        tolimps = (TableRow) findViewById(R.id.tolimp);
-        tolimps.setBackgroundColor(getResources().getColor(R.color.button));
-        tre_akkaunt = (TableRow) findViewById(R.id.tre_akkaunt);
-        tre_akkaunt.setBackgroundColor(getResources().getColor(R.color.button));
+        reAccount.setBackgroundColor(getResources().getColor(R.color.button));
+        t_name.setBackgroundColor(getResources().getColor(R.color.button));
+        t_timeTable.setBackgroundColor(getResources().getColor(R.color.button));
+        t_teachers.setBackgroundColor(getResources().getColor(R.color.button));
+        t_uspevaemost.setBackgroundColor(getResources().getColor(R.color.button));
+        t_send.setBackgroundColor(getResources().getColor(R.color.button));
+        t_itogMark.setBackgroundColor(getResources().getColor(R.color.button));
+        t_information.setBackgroundColor(getResources().getColor(R.color.button));
+        t_olimps.setBackgroundColor(getResources().getColor(R.color.button));
+        t_reAccount.setBackgroundColor(getResources().getColor(R.color.button));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         CurrentSession.setProgramStart(false);
+    }
+
+    /** метод для создания фонового процесса-обновления **/
+    private void createBackgroundProcess() {
+        CurrentSession.setProgramStart(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(this, FoneService.class));
+        } else {
+            startService(new Intent(this, FoneService.class));
+        }
     }
 }
