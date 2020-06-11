@@ -21,7 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.helpforcurator.help.ConectionHealper;
+import com.example.helpforcurator.help.ConnectionHelper;
 import com.example.helpforcurator.help.CurrentSession;
 import com.example.helpforcurator.R;
 
@@ -84,7 +84,7 @@ public class Tab2 extends Fragment {
     /** AsyncTask для обновления данных пользователя **/
     class UpdateAsyncTask extends AsyncTask<String, String, String> {
         int _id;
-        String _phone, _email, answer, server = ConectionHealper.getUrl() + "/update";
+        String _phone, _email, answer, server = ConnectionHelper.getUrl() + "/update";
 
         @Override
         protected void onPreExecute() {
@@ -101,7 +101,7 @@ public class Tab2 extends Fragment {
             postDataParams.put("type", "contacts");
             postDataParams.put("phone", _phone);
             postDataParams.put("email", _email);
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 

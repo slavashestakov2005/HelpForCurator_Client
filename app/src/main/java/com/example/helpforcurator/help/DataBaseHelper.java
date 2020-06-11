@@ -1,6 +1,6 @@
 /**
  * Вспомогательный класс для соединения с локальной базой данных.
- * Взят с какого-то сайта полностью.
+ * Взят полность с http://blog.harrix.org/article/6610.
  * **/
 
 package com.example.helpforcurator.help;
@@ -21,7 +21,7 @@ import java.io.OutputStream;
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static String DB_NAME = "base.db";
     private static String DB_PATH = "";
-    private static final int DB_VERSION = 18;
+    private static final int DB_VERSION = 19;
     private SQLiteDatabase mDataBase;
     private final Context mContext;
     private boolean mNeedUpdate = false;

@@ -23,7 +23,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.helpforcurator.help.ConectionHealper;
+import com.example.helpforcurator.help.ConnectionHelper;
 import com.example.helpforcurator.help.CurrentSession;
 import com.example.helpforcurator.R;
 
@@ -48,7 +48,7 @@ public class Tab3 extends Fragment {
         errors = (TextView) root.findViewById(R.id.errors);
         id = (TextView) root.findViewById(R.id.id);
         id.setText(System.lineSeparator() + System.lineSeparator() + "Ваш id : " + CurrentSession.getUserId() +
-                System.lineSeparator() + "Url сервера : " + ConectionHealper.getUrl());
+                System.lineSeparator() + "Url сервера : " + ConnectionHelper.getUrl());
         /** обработка нажатий **/
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +107,7 @@ public class Tab3 extends Fragment {
     /** AsyncTask для обновления данных пользователя **/
     class UpdateAsyncTask extends AsyncTask<String, String, String> {
         int _id;
-        String _password, answer, server = ConectionHealper.getUrl() + "/update";
+        String _password, answer, server = ConnectionHelper.getUrl() + "/update";
 
         @Override
         protected void onPreExecute() {
@@ -122,7 +122,7 @@ public class Tab3 extends Fragment {
             postDataParams.put("id", "" + _id);
             postDataParams.put("type", "password");
             postDataParams.put("password", _password);
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 

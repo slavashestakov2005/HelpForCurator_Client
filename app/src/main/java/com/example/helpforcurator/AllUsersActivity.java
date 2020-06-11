@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.helpforcurator.help.ConectionHealper;
+import com.example.helpforcurator.help.ConnectionHelper;
 
 import java.util.HashMap;
 
@@ -31,7 +31,7 @@ public class AllUsersActivity extends AppCompatActivity {
 
     /** AsyncTask для получения списка пользователей **/
     class ShowAllUsersAsyncTask extends AsyncTask<String, String, String> {
-        String answer, server = ConectionHealper.getUrl() + "/all";
+        String answer, server = ConnectionHelper.getUrl() + "/all";
 
         @Override
         protected void onPreExecute() {
@@ -41,7 +41,7 @@ public class AllUsersActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 

@@ -18,7 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.helpforcurator.R;
-import com.example.helpforcurator.help.ConectionHealper;
+import com.example.helpforcurator.help.ConnectionHelper;
 import com.example.helpforcurator.help.CurrentChat;
 import com.example.helpforcurator.help.CurrentSession;
 
@@ -67,7 +67,7 @@ public class CreateNewChatActivity extends AppCompatActivity {
     /** AsyncTask для создания нового чата **/
     class CreateChatAsyncTask extends AsyncTask<String, String, String> {
         String _name;
-        String answer, server = ConectionHealper.getUrl() + "/create_chat";
+        String answer, server = ConnectionHelper.getUrl() + "/create_chat";
 
         public CreateChatAsyncTask(String _name) {
             this._name = _name;
@@ -82,7 +82,7 @@ public class CreateNewChatActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
             postDataParams.put("name", _name);
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 
@@ -104,7 +104,7 @@ public class CreateNewChatActivity extends AppCompatActivity {
     class InsertToChatAsyncTask extends AsyncTask<String, String, String> {
         int _user_id, _chat_id;
         String _chat_name;
-        String answer, server = ConectionHealper.getUrl() + "/insert_to_chat";
+        String answer, server = ConnectionHelper.getUrl() + "/insert_to_chat";
 
         public InsertToChatAsyncTask(int _user_id, int _chat_id, String _chat_name) {
             this._user_id = _user_id;
@@ -122,7 +122,7 @@ public class CreateNewChatActivity extends AppCompatActivity {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
             postDataParams.put("id_chat", "" + _chat_id);
             postDataParams.put("id_user", "" + _user_id);
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 

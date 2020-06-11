@@ -17,7 +17,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.helpforcurator.R;
-import com.example.helpforcurator.help.ConectionHealper;
+import com.example.helpforcurator.help.ConnectionHelper;
 import com.example.helpforcurator.help.CurrentSession;
 import com.example.helpforcurator.mainmenu.MenuActivity;
 
@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /** AsyncTask для входа пользователя **/
     class InputAsyncTask extends AsyncTask<String, String, String> {
-        String _login, _password, answer, server = ConectionHealper.getUrl() + "/input";
+        String _login, _password, answer, server = ConnectionHelper.getUrl() + "/input";
 
         @Override
         protected void onPreExecute() {
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
             postDataParams.put("login", _login);
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 

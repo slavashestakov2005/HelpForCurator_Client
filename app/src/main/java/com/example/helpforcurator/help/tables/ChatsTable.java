@@ -7,7 +7,9 @@ import android.util.Log;
 
 public class ChatsTable {
     private static String DB_TABLE = "chats";
-    private static String COLUMN_ID = "id", COLUMN_NAME = "name", COLUMN_TIME = "time";
+    private static String COLUMN_ID = "id",     // int  NOT NULL    PK
+            COLUMN_NAME = "name",               // text
+            COLUMN_TIME = "time";               // text
     public static int INDEX_ID = 0, INDEX_NAME = 1, INDEX_TIME = 2;
 
     public static Cursor select(SQLiteDatabase db, int id){

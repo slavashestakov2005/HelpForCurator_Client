@@ -20,7 +20,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.helpforcurator.R;
-import com.example.helpforcurator.help.ConectionHealper;
+import com.example.helpforcurator.help.ConnectionHelper;
 import com.example.helpforcurator.help.CurrentChat;
 import com.example.helpforcurator.help.CurrentSession;
 import com.example.helpforcurator.help.FoneService;
@@ -140,7 +140,7 @@ public class ChatSettingsActivity extends PreferenceActivity implements SharedPr
     class InsertToChatAsyncTask extends AsyncTask<String, String, String> {
         int _user_id, _chat_id;
         String _chat_name;
-        String answer, server = ConectionHealper.getUrl() + "/insert_to_chat";
+        String answer, server = ConnectionHelper.getUrl() + "/insert_to_chat";
 
         public InsertToChatAsyncTask(int _user_id, int _chat_id, String _chat_name) {
             this._user_id = _user_id;
@@ -158,7 +158,7 @@ public class ChatSettingsActivity extends PreferenceActivity implements SharedPr
             HashMap<String, String> postDataParams = new HashMap<String, String>();
             postDataParams.put("id_chat", "" + _chat_id);
             postDataParams.put("id_user", "" + _user_id);
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 
@@ -172,7 +172,7 @@ public class ChatSettingsActivity extends PreferenceActivity implements SharedPr
     /** AsyncTask для удаления себя из чата **/
     class DeleteFormChatAsyncTask extends AsyncTask<String, String, String> {
         int _user_id, _chat_id;
-        String answer, server = ConectionHealper.getUrl() + "/delete_user_from_chat";
+        String answer, server = ConnectionHelper.getUrl() + "/delete_user_from_chat";
 
         public DeleteFormChatAsyncTask(int _user_id, int _chat_id) {
             this._user_id = _user_id;
@@ -189,7 +189,7 @@ public class ChatSettingsActivity extends PreferenceActivity implements SharedPr
             HashMap<String, String> postDataParams = new HashMap<String, String>();
             postDataParams.put("id_chat", "" + _chat_id);
             postDataParams.put("id_user", "" + _user_id);
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 

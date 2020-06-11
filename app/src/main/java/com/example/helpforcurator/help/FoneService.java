@@ -1,6 +1,6 @@
 /**
  * Класс фонового сервиса.
- * За основу взят пример с habr.
+ * За основу взят пример с https://habr.com/ru/post/269135.
  * Этот класс:
  * 1. Обновляет список сообщений текущего чата (.../messages_chat_after и UPDATE_CHAT).
  * 2. Обновляет список чатов текущего пользователя. (.../get_chats и UPDATE_LIST_CHAT).
@@ -25,6 +25,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -113,10 +114,9 @@ public class FoneService extends Service {
     /** Поток обращенй к серверу **/
     private void startLoop() {
         thr = new Thread(new Runnable() {
-            String answer;
             public void run() {
+                initAsyncChatsUpdate();
                 while (CurrentSession.isProgramStart()) {
-                    getMessagesInChat();
                     getChats();
                     try {
                         Thread.sleep(15000);
@@ -125,116 +125,158 @@ public class FoneService extends Service {
                 stopSelf();
             }
 
-            private String convertTime(String _time){
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new Date(Long.parseLong(_time)));
-                final StringBuilder builder = new StringBuilder();
-                int time = calendar.get(calendar.DAY_OF_MONTH);
-                if (time < 10) builder.append("0");
-                builder.append(time).append(".");
-                time = calendar.get(calendar.MONTH) + 1;
-                if (time < 10) builder.append("0");
-                builder.append(time).append(".");
-                time = calendar.get(calendar.YEAR);
-                builder.append(time).append(" ");
-                time = calendar.get(calendar.AM_PM) * 12 + calendar.get(calendar.HOUR);
-                if (time < 10) builder.append("0");
-                builder.append(time).append(".");
-                time = calendar.get(calendar.MINUTE);
-                if (time < 10) builder.append("0");
-                builder.append(time);
-                return builder.toString();
-            }
-
-            private void getMessagesInChat(){
-                // создадим запрос и получим ответ
-                final String server = ConectionHealper.getUrl() + "/messages_chat_after";
-                //int nowMessages = MessagesTable.getCount(localDB, CurrentChat.getId_chat());
-                HashMap<String, String> postDataParams = new HashMap<String, String>();
-                int _id_chat = CurrentChat.getId_chat();
-                String _name_chat = CurrentChat.getChatName();
-                Cursor cursor = ChatsTable.select(localDB, _id_chat);
-                String _time;
-                if (cursor == null || cursor.getCount() == 0) _time = "0";
-                else {
+            private void initAsyncChatsUpdate(){
+                Cursor cursor = ChatUserTable.select(localDB, CurrentSession.getUserId());
+                if (cursor != null && cursor.getCount() > 0){
                     cursor.moveToFirst();
-                    _time = cursor.getString(ChatsTable.INDEX_TIME);
-                }
-                postDataParams.put("id_chat", "" + _id_chat);
-                postDataParams.put("time", "" + _time);
-                answer = ConectionHealper.performGetCall(server, postDataParams);
-                // работаем с ответом
-                if (answer != null && !answer.equals("")) {
-                    String[] mas = answer.split(" \\| ");
-                    // чат обновлялся
-                    _time = mas[0];
-                    ChatsTable.updateChat(localDB, _id_chat, _name_chat, _time);
-                    // парсим ответ
-                    int length = -1, id_chat = -1, id_user = -1;
-                    boolean b = false;
-                    boolean isTime = true;
-                    String text = "", time = "";
-                    for(String word : mas){
-                        if (isTime){
-                            isTime = false;
-                            continue;
-                        }
-                        if (length != -1 && id_chat != -1 && b && !time.equals("") && text.length() >= length){
-                            // если всё распарсили -> добавить в БД
-                            MessagesTable.insertMessage(localDB, id_chat, id_user, text, convertTime(time));
-                            // продолжить парсинг
-                            length = -1; id_chat = -1; id_user = -1; text = ""; time = ""; b = false;
-                        }
-                        if (length == -1) length = Integer.parseInt(word);
-                        else if (id_chat == -1) id_chat = Integer.parseInt(word);
-                        else if (!b) { id_user = Integer.parseInt(word); b = true; }
-                        else if (time.equals("")) time = word;
-                        else if (text.length() < length){
-                            text += word;
-                            if (text.length() < length) text += " | ";
-                        }
+                    while (!cursor.isAfterLast()){
+                        final int chat_id = cursor.getInt(0);
+                        Log.i("CHAT", chat_id + "");
+                        Thread thread = new Thread(new Runnable() {
+                            final int _id_chat = chat_id;
+                            final int user_id = CurrentSession.getUserId();
+                            @Override
+                            public void run() {
+                                while (CurrentSession.getUserId() == user_id && CurrentSession.isProgramStart()){
+                                    getMessagesInChat(_id_chat);
+                                    try {
+                                        Thread.sleep(1000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
+                        thread.setDaemon(true);
+                        thread.start();
+                        cursor.moveToNext();
                     }
-                    if (length != -1 && id_chat != -1 && b && !time.equals("") && text.length() >= length) {
-                        // если всё распарсили -> добавить в БД
-                        MessagesTable.insertMessage(localDB, id_chat, id_user, text, convertTime(time));
-                    }
-                    // обновить view
-                    if (mas.length > 1) sendBroadcast(new Intent("com.example.helpforcurator.action.UPDATE_CHAT"));
-                }
-            }
-
-            private void getChats(){
-                final String server = ConectionHealper.getUrl() + "/get_chats";
-                // создадим запрос и получим ответ
-                int id = CurrentSession.getUserId();
-                String name = CurrentSession.getName();
-                String surname = CurrentSession.getSurname();
-                String time = CurrentSession.getChatTimeUpdate();
-                //int nowChats = ChatUserTable.getCount(localDB, id);
-                HashMap<String, String> postDataParams = new HashMap<String, String>();
-                postDataParams.put("id", "" + id);
-                postDataParams.put("time", time);
-                answer = ConectionHealper.performGetCall(server, postDataParams);
-                // работаем с ответом
-                if (answer != null && !answer.equals("")) {
-                    String[] mas = answer.split(" \\| ");
-                    time = mas[0];
-                    UsersTable.updateUser(localDB, id, name, surname, time);
-                    if (CurrentSession.getUserId() == id) CurrentSession.setChatTimeUpdate(time);
-                    if (mas.length < 2) return;
-                    for (int i = 2; i < mas.length; i += 2){
-                        int id_chat = Integer.parseInt(mas[i - 1]);
-                        // добавить в БД чат, time = "0", т.к. не обновлялся никогда
-                        ChatsTable.insertChat(localDB, id_chat, mas[i], "0");
-                        // добавим в БД наше наличие
-                        ChatUserTable.insertChat(localDB, id_chat, id);
-                    }
-                    // обновить view
-                    sendBroadcast(new Intent("com.example.helpforcurator.action.UPDATE_LIST_CHAT"));
                 }
             }
         });
         thr.setDaemon(true);
         thr.start();
+    }
+
+    private String convertTime(String _time){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(Long.parseLong(_time)));
+        final StringBuilder builder = new StringBuilder();
+        int time = calendar.get(calendar.DAY_OF_MONTH);
+        if (time < 10) builder.append("0");
+        builder.append(time).append(".");
+        time = calendar.get(calendar.MONTH) + 1;
+        if (time < 10) builder.append("0");
+        builder.append(time).append(".");
+        time = calendar.get(calendar.YEAR);
+        builder.append(time).append(" ");
+        time = calendar.get(calendar.AM_PM) * 12 + calendar.get(calendar.HOUR);
+        if (time < 10) builder.append("0");
+        builder.append(time).append(".");
+        time = calendar.get(calendar.MINUTE);
+        if (time < 10) builder.append("0");
+        builder.append(time);
+        return builder.toString();
+    }
+
+    private void getMessagesInChat(int _id_chat){
+        // создадим запрос и получим ответ
+        final String server = ConnectionHelper.getUrl() + "/messages_chat_after";
+        HashMap<String, String> postDataParams = new HashMap<String, String>();
+        Cursor cursor = ChatsTable.select(localDB, _id_chat);
+        cursor.moveToFirst();
+        String _time = cursor.getString(ChatsTable.INDEX_TIME);
+        String _name_chat = cursor.getString(ChatsTable.INDEX_NAME);
+        postDataParams.put("id_chat", "" + _id_chat);
+        postDataParams.put("time", "" + _time);
+        String answer = ConnectionHelper.performGetCall(server, postDataParams);
+        // работаем с ответом
+        if (answer != null && !answer.equals("")) {
+            String[] mas = answer.split(" \\| ");
+            // чат обновлялся
+            _time = mas[0];
+            ChatsTable.updateChat(localDB, _id_chat, _name_chat, _time);
+            // парсим ответ
+            int length = -1, id_chat = -1, id_user = -1;
+            boolean b = false;
+            boolean isTime = true;
+            String text = "", time = "";
+            for(String word : mas){
+                if (isTime){
+                    isTime = false;
+                    continue;
+                }
+                if (length != -1 && id_chat != -1 && b && !time.equals("") && text.length() >= length){
+                    // если всё распарсили -> добавить в БД
+                    MessagesTable.insertMessage(localDB, id_chat, id_user, text, convertTime(time));
+                    // продолжить парсинг
+                    length = -1; id_chat = -1; id_user = -1; text = ""; time = ""; b = false;
+                }
+                if (length == -1) length = Integer.parseInt(word);
+                else if (id_chat == -1) id_chat = Integer.parseInt(word);
+                else if (!b) { id_user = Integer.parseInt(word); b = true; }
+                else if (time.equals("")) time = word;
+                else if (text.length() < length){
+                    text += word;
+                    if (text.length() < length) text += " | ";
+                }
+            }
+            if (length != -1 && id_chat != -1 && b && !time.equals("") && text.length() >= length) {
+                // если всё распарсили -> добавить в БД
+                MessagesTable.insertMessage(localDB, id_chat, id_user, text, convertTime(time));
+            }
+            // обновить view
+            if (mas.length > 1) sendBroadcast(new Intent("com.example.helpforcurator.action.UPDATE_CHAT"));
+        }
+    }
+
+    private void getChats(){
+        final String server = ConnectionHelper.getUrl() + "/get_chats";
+        // создадим запрос и получим ответ
+        final int id = CurrentSession.getUserId();
+        String name = CurrentSession.getName();
+        String surname = CurrentSession.getSurname();
+        String time = CurrentSession.getChatTimeUpdate();
+        HashMap<String, String> postDataParams = new HashMap<String, String>();
+        postDataParams.put("id", "" + id);
+        postDataParams.put("time", time);
+        String answer = ConnectionHelper.performGetCall(server, postDataParams);
+        // работаем с ответом
+        if (answer != null && !answer.equals("")) {
+            String[] mas = answer.split(" \\| ");
+            time = mas[0];
+            UsersTable.updateUser(localDB, id, name, surname, time);
+            if (CurrentSession.getUserId() == id) CurrentSession.setChatTimeUpdate(time);
+            if (mas.length < 2) return;
+            for (int i = 2; i < mas.length; i += 2){
+                final int id_chat = Integer.parseInt(mas[i - 1]);
+                if (!ChatUserTable.contain(localDB, id_chat, id)){
+                    // добавить в БД чат, time = "0", т.к. не обновлялся никогда
+                    ChatsTable.insertChat(localDB, id_chat, mas[i], "0");
+                    // добавим в БД наше наличие
+                    ChatUserTable.insertChat(localDB, id_chat, id);
+                    Thread thread = new Thread(new Runnable() {
+                        final int _id_chat = id_chat;
+                        final int user_id = CurrentSession.getUserId();
+                        @Override
+                        public void run() {
+                            Log.i("CHAT", _id_chat + "");
+                            while (CurrentSession.getUserId() == user_id && CurrentSession.isProgramStart()){
+                                getMessagesInChat(_id_chat);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                    thread.setDaemon(true);
+                    thread.start();
+                }
+            }
+            // обновить view
+            sendBroadcast(new Intent("com.example.helpforcurator.action.UPDATE_LIST_CHAT"));
+        }
     }
 }

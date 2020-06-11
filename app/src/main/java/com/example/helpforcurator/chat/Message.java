@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.helpforcurator.R;
-import com.example.helpforcurator.help.ConectionHealper;
+import com.example.helpforcurator.help.ConnectionHelper;
 import com.example.helpforcurator.help.FoneService;
 import com.example.helpforcurator.help.tables.UsersTable;
 
@@ -53,7 +53,7 @@ public class Message extends RelativeLayout {
     /** AsyncTask для получения информации о пользователе, если раньше он нам ничего не отправлял **/
     class GetInfoAsyncTask extends AsyncTask<String, String, String> {
         int _id_user;
-        String answer, server = ConectionHealper.getUrl() + "/get_user_info";
+        String answer, server = ConnectionHelper.getUrl() + "/get_user_info";
 
         public GetInfoAsyncTask(int _id_user) {
             this._id_user = _id_user;
@@ -68,7 +68,7 @@ public class Message extends RelativeLayout {
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
             postDataParams.put("id", "" + _id_user);
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 

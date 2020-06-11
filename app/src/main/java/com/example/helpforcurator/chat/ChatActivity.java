@@ -27,7 +27,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.helpforcurator.R;
-import com.example.helpforcurator.help.ConectionHealper;
+import com.example.helpforcurator.help.ConnectionHelper;
 import com.example.helpforcurator.help.CurrentChat;
 import com.example.helpforcurator.help.CurrentSession;
 import com.example.helpforcurator.help.FoneService;
@@ -160,7 +160,7 @@ public class ChatActivity extends AppCompatActivity {
     class SendMessageAsyncTask extends AsyncTask<String, String, String> {
         int _id_chat, _id_author;
         String _text, _name_chat;
-        String answer, server = ConectionHealper.getUrl() + "/send";
+        String answer, server = ConnectionHelper.getUrl() + "/send";
 
         public SendMessageAsyncTask(int _id_chat, String _name_chat, int _id_author, String _text) {
             this._id_chat = _id_chat;
@@ -180,7 +180,7 @@ public class ChatActivity extends AppCompatActivity {
             postDataParams.put("id_chat", "" + _id_chat);
             postDataParams.put("id_author", "" + _id_author);
             postDataParams.put("text", _text);
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 

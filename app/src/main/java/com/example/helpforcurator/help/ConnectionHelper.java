@@ -1,6 +1,6 @@
 /**
  * Вспомогательный класс для соединения с сервером.
- * Взят с какого-то сайта полностью.
+ * Частично взят с http://blog.harrix.org/article/7084.
  * **/
 
 package com.example.helpforcurator.help;
@@ -16,7 +16,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConectionHealper {
+public class ConnectionHelper {
     static private String ip = "192.168.42.141";    // Digma
     //                         "192.168.42.81"      // Honor
     static public String getUrl(){
@@ -24,7 +24,7 @@ public class ConectionHealper {
     }
 
     public static void setIp(String ip) {
-        if (!ip.equals("")) ConectionHealper.ip = ip;
+        if (!ip.equals("")) ConnectionHelper.ip = ip;
     }
 
     static public String performGetCall(String requestURL, HashMap<String, String> getDataParams) {

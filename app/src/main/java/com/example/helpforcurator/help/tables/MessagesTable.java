@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class MessagesTable {
     private static String DB_TABLE = "messages";
-    private static String COLUMN_ID_CHAT = "id_chat", COLUMN_ID_USER = "id_user", COLUMN_TEXT = "text", COLUMN_TIME = "time";
+    private static String COLUMN_ID_CHAT = "id_chat",   // int  NOT NULL
+            COLUMN_ID_USER = "id_user",                 // int  NOT NULL
+            COLUMN_TEXT = "text",                       // text
+            COLUMN_TIME = "time";                       // text
     public static int INDEX_ID_CHAT = 0, INDEX_ID_USER = 1, INDEX_TEXT = 2, INDEX_TIME = 3;
 
     public static Cursor selectAll(SQLiteDatabase db, int id_chat){

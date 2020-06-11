@@ -16,7 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.helpforcurator.R;
-import com.example.helpforcurator.help.ConectionHealper;
+import com.example.helpforcurator.help.ConnectionHelper;
 import com.example.helpforcurator.help.CurrentSession;
 import com.example.helpforcurator.mainmenu.MenuActivity;
 
@@ -109,7 +109,7 @@ public class Regustration2Activity extends AppCompatActivity {
     /** AsyncTask для обновления данных пользователя **/
     class CreateAsyncTask extends AsyncTask<String, String, String> {
         String _login, _password, _phone, _email, _name, _surname, _middleName,
-                answer, server = ConectionHealper.getUrl() + "/create";
+                answer, server = ConnectionHelper.getUrl() + "/create";
 
         public CreateAsyncTask(String _login, String _password, String _phone, String _email, String _name, String _surname, String _middleName) {
             this._login = _login;
@@ -136,7 +136,7 @@ public class Regustration2Activity extends AppCompatActivity {
             postDataParams.put("name", _name);
             postDataParams.put("surname", _surname);
             postDataParams.put("middlename", _middleName);
-            answer = ConectionHealper.performGetCall(server, postDataParams);
+            answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
 

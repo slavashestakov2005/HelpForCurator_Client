@@ -16,7 +16,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.helpforcurator.help.ConectionHealper;
+import com.example.helpforcurator.help.ConnectionHelper;
 import com.example.helpforcurator.input.LoginActivity;
 import com.example.helpforcurator.input.RegustrationActivity;
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConectionHealper.setIp(((EditText) findViewById(R.id.ip)).getText().toString());
+                ConnectionHelper.setIp(((EditText) findViewById(R.id.ip)).getText().toString());
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
