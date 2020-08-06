@@ -17,7 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -32,6 +35,7 @@ public class Tab1 extends Fragment {
     /** view элемненты **/
     private EditText name, surname, middleName;
     private Button save;
+    private RadioGroup gender;
     private TextView errors;
 
     @Override
@@ -39,10 +43,11 @@ public class Tab1 extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         /** получение view **/
-        View root = inflater.inflate(R.layout.tab1, container, false);
+        final View root = inflater.inflate(R.layout.tab1, container, false);
         name = (EditText) root.findViewById(R.id.name);
         surname = (EditText) root.findViewById(R.id.surname);
         middleName = (EditText) root.findViewById(R.id.middlename);
+        gender = (RadioGroup) root.findViewById(R.id.gender);
         errors = (TextView) root.findViewById(R.id.errors);
         save = (Button) root.findViewById(R.id.save);
         /** обработка нажатий **/
@@ -59,6 +64,8 @@ public class Tab1 extends Fragment {
                             name.setBackgroundColor(Color.parseColor("#ffffff"));
                             surname.setBackgroundColor(Color.parseColor("#ffffff"));
                             middleName.setBackgroundColor(Color.parseColor("#ffffff"));
+                            int radioButtonId = gender.getCheckedRadioButtonId();
+                            Toast.makeText(getContext(), ((RadioButton) root.findViewById(radioButtonId)).getText(), Toast.LENGTH_SHORT).show();
                             errors.setText("");
                         } else {
                             surname.setBackgroundColor(Color.parseColor("#ffffff"));

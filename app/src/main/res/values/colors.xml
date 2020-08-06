@@ -7,4 +7,5 @@
     <color name="buttonActivity">#00A8F3</color>
     <color name="error">#F1565E</color>
     <color name="white">#FFFFFF</color>
+    <color name="systemMessage">#909090</color>
 </resources>

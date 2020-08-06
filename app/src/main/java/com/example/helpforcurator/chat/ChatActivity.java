@@ -37,8 +37,10 @@ import com.example.helpforcurator.help.tables.UsersTable;
 import java.util.HashMap;
 
 public class ChatActivity extends AppCompatActivity {
+    private final int SYSTEM_ID = 0;
     /** view элемненты **/
     private LinearLayout container;
+    private SystemMessage systemMessage = null;
     private MyMessage myMessage = null;
     private Message message = null;
     private EditText text;
@@ -78,7 +80,13 @@ public class ChatActivity extends AppCompatActivity {
             final int id_user = messages.getInt(MessagesTable.INDEX_ID_USER);
             final String text = messages.getString(MessagesTable.INDEX_TEXT);
             final String time = messages.getString(MessagesTable.INDEX_TIME);
-            if (id_user == CurrentSession.getUserId()){
+            if (id_user == SYSTEM_ID){
+                systemMessage = new SystemMessage(getApplicationContext());
+                systemMessage.setMessageText(text);
+                container.addView(systemMessage);
+                systemMessage = null;
+            }
+            else if (id_user == CurrentSession.getUserId()){
                 myMessage = new MyMessage(getApplicationContext());
                 myMessage.setMessageText(text);
                 myMessage.setMessageTime(time);
@@ -193,7 +201,7 @@ public class ChatActivity extends AppCompatActivity {
     public class UpdateReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i("FONE", "FoneProcess нашёл новые сообщения");
+            Log.e("FONE", "FoneProcess нашёл новые сообщения");
             updateList();
         }
     }

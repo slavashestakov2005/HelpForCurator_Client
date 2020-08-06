@@ -30,6 +30,7 @@ public class ConnectionHelper {
     static public String performGetCall(String requestURL, HashMap<String, String> getDataParams) {
         String response = "";
         URL url;
+        // String txt = "";
         HttpURLConnection urlConnection = null;
         try {
             url = new URL(requestURL + "?" + getDataString(getDataParams));
@@ -38,6 +39,7 @@ public class ConnectionHelper {
             if(responseCode == HttpURLConnection.HTTP_OK){
                 response = convertInputStreamToString(urlConnection.getInputStream());
             }
+            // txt = url.toString();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -45,6 +47,8 @@ public class ConnectionHelper {
                 urlConnection.disconnect();
             }
         }
+        // Log.e("URL", txt);
+        // Log.e("URL", response);
         return response;
     }
 
@@ -60,7 +64,6 @@ public class ConnectionHelper {
             result.append("=");
             result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
         }
-
         return result.toString();
     }
 

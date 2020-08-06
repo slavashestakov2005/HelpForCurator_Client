@@ -236,7 +236,12 @@ public class FoneService extends Service {
         final int id = CurrentSession.getUserId();
         String name = CurrentSession.getName();
         String surname = CurrentSession.getSurname();
-        String time = CurrentSession.getChatTimeUpdate();
+        Cursor cursor = UsersTable.select(localDB, id);
+        String time;
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            time = cursor.getString(UsersTable.INDEX_TIME);
+        } else time = "0";
         HashMap<String, String> postDataParams = new HashMap<String, String>();
         postDataParams.put("id", "" + id);
         postDataParams.put("time", time);

@@ -1,14 +1,13 @@
 package com.example.helpforcurator.help.tables;
 
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class ChatUserTable {
     private static String DB_TABLE = "chat_user";
-    private static String COLUMN_ID_CHAT = "id_chat",   // int  NOT NULL
-            COLUMN_ID_USER = "id_user";                 // int  NOT NULL
+    private static String COLUMN_ID_CHAT = "id_chat",   // int  NOT NULL    PK
+            COLUMN_ID_USER = "id_user";                 // int  NOT NULL    PK
     public static int INDEX_ID_CHAT = 0, INDEX_ID_USER = 1;
 
     public static Cursor select(SQLiteDatabase db, int id_user){

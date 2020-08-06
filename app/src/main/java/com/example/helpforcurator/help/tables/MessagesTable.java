@@ -1,16 +1,16 @@
 package com.example.helpforcurator.help.tables;
 
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class MessagesTable {
     private static String DB_TABLE = "messages";
     private static String COLUMN_ID_CHAT = "id_chat",   // int  NOT NULL
-            COLUMN_ID_USER = "id_user",                 // int  NOT NULL
+            COLUMN_ID_USER = "id_user",                 // int  NOT NULL    PK
             COLUMN_TEXT = "text",                       // text
-            COLUMN_TIME = "time";                       // text
+            COLUMN_TIME = "time";                       // text NOT NULL    PK
     public static int INDEX_ID_CHAT = 0, INDEX_ID_USER = 1, INDEX_TEXT = 2, INDEX_TIME = 3;
 
     public static Cursor selectAll(SQLiteDatabase db, int id_chat){
@@ -18,6 +18,7 @@ public class MessagesTable {
     }
 
     public static void insertMessage(SQLiteDatabase db, int id_chat, int id_user, String text, String time){
+        Log.e("FONE", "add to " + id_chat + "; text = " + text);
         ContentValues newValues = new ContentValues();
         newValues.put(COLUMN_ID_CHAT, id_chat);
         newValues.put(COLUMN_ID_USER, id_user);
