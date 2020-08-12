@@ -3,6 +3,7 @@
  * По нажатию "Настройки" сверху переходим в chat.ChatSettingsActivity.
  * Здесь работает ресивер UPDATE_CHAT.
  * Работа ресивера отображается в Log.i.FONE.
+ * Обращение к серверу ".../send".
  * **/
 
 package com.example.helpforcurator.chat;
@@ -166,14 +167,14 @@ public class ChatActivity extends AppCompatActivity {
 
     /** AsyncTask для отправки сообщений **/
     class SendMessageAsyncTask extends AsyncTask<String, String, String> {
-        int _id_chat, _id_author;
+        int _id_chat, _id_user;
         String _text, _name_chat;
         String answer, server = ConnectionHelper.getUrl() + "/send";
 
-        public SendMessageAsyncTask(int _id_chat, String _name_chat, int _id_author, String _text) {
+        public SendMessageAsyncTask(int _id_chat, String _name_chat, int _id_user, String _text) {
             this._id_chat = _id_chat;
             this._name_chat = _name_chat;
-            this._id_author = _id_author;
+            this._id_user = _id_user;
             this._text = _text;
         }
 
@@ -186,7 +187,7 @@ public class ChatActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
             postDataParams.put("id_chat", "" + _id_chat);
-            postDataParams.put("id_author", "" + _id_author);
+            postDataParams.put("id_user", "" + _id_user);
             postDataParams.put("text", _text);
             answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;

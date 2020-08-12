@@ -4,6 +4,10 @@
  * 1. Выход из чата.
  * 2. Добавление в чат.
  * 3. Удаление истории (возможно нет так, как нужно).
+ * Обращение к серверу ".../insert_to_chat".
+ * Обращение к серверу ".../delete_user_from_chat".
+ * Обращение к серверу ".../who_in_chat".
+ * Обращение к серверу ".../get_user_info".
  * **/
 
 package com.example.helpforcurator.chat;
@@ -349,7 +353,7 @@ public class ChatSettingsActivity extends AppCompatActivity{
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
-            postDataParams.put("id", "" + _id_user);
+            postDataParams.put("id_user", "" + _id_user);
             answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }

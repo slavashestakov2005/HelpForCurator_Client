@@ -6,6 +6,7 @@
  * Также здесь выводится отладочная информация:
  * 1. Id текущего пользователя
  * 2. Url адрес сервера
+ * Обращение к серверу ".../update".
  * **/
 
 package com.example.helpforcurator.name;
@@ -119,7 +120,7 @@ public class Tab3 extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
-            postDataParams.put("id", "" + _id);
+            postDataParams.put("id_user", "" + _id);
             postDataParams.put("type", "password");
             postDataParams.put("password", _password);
             answer = ConnectionHelper.performGetCall(server, postDataParams);

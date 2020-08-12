@@ -4,6 +4,7 @@
  * 1. Телефон
  * 2. Email
  * Сохраняется кнопкой "Сохранить"
+ * Обращение к серверу ".../update".
  * **/
 
 package com.example.helpforcurator.name;
@@ -97,7 +98,7 @@ public class Tab2 extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
-            postDataParams.put("id", "" + _id);
+            postDataParams.put("id_user", "" + _id);
             postDataParams.put("type", "contacts");
             postDataParams.put("phone", _phone);
             postDataParams.put("email", _email);

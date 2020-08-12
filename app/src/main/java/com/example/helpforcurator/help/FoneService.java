@@ -6,6 +6,8 @@
  * 2. Обновляет список чатов текущего пользователя. (.../get_chats и UPDATE_LIST_CHAT).
  * 3. Спит 15 секунд и заново отправляет запросы на сервер.
  * Также он изменяет время отправки сообщений с мс. в привычный вид "dd.mm.yyyy hh.mm".
+ * Обращение к серверу ".../messages_chat_after".
+ * Обращение к серверу ".../get_chats".
  * **/
 
 package com.example.helpforcurator.help;
@@ -243,7 +245,7 @@ public class FoneService extends Service {
             time = cursor.getString(UsersTable.INDEX_TIME);
         } else time = "0";
         HashMap<String, String> postDataParams = new HashMap<String, String>();
-        postDataParams.put("id", "" + id);
+        postDataParams.put("id_user", "" + id);
         postDataParams.put("time", time);
         String answer = ConnectionHelper.performGetCall(server, postDataParams);
         // работаем с ответом

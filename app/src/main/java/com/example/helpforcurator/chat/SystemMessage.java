@@ -1,3 +1,7 @@
+/**
+ * Класс для отображения системных сообщений в активности chat.ChatActivity.
+ * **/
+
 package com.example.helpforcurator.chat;
 
 import android.content.Context;

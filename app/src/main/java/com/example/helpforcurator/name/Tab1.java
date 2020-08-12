@@ -5,6 +5,7 @@
  * 2. Имя
  * 3. Отчество
  * Сохраняется кнопкой "Сохранить"
+ * Обращение к серверу ".../update".
  * **/
 
 package com.example.helpforcurator.name;
@@ -17,17 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.helpforcurator.R;
 import com.example.helpforcurator.help.ConnectionHelper;
 import com.example.helpforcurator.help.CurrentSession;
-import com.example.helpforcurator.R;
 
 import java.util.HashMap;
 
@@ -64,8 +63,8 @@ public class Tab1 extends Fragment {
                             name.setBackgroundColor(Color.parseColor("#ffffff"));
                             surname.setBackgroundColor(Color.parseColor("#ffffff"));
                             middleName.setBackgroundColor(Color.parseColor("#ffffff"));
-                            int radioButtonId = gender.getCheckedRadioButtonId();
-                            Toast.makeText(getContext(), ((RadioButton) root.findViewById(radioButtonId)).getText(), Toast.LENGTH_SHORT).show();
+                            // int radioButtonId = gender.getCheckedRadioButtonId();
+                            // Toast.makeText(getContext(), ((RadioButton) root.findViewById(radioButtonId)).getText(), Toast.LENGTH_SHORT).show();
                             errors.setText("");
                         } else {
                             surname.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -121,11 +120,11 @@ public class Tab1 extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
-            postDataParams.put("id", "" + _id);
+            postDataParams.put("id_user", "" + _id);
             postDataParams.put("type", "name");
             postDataParams.put("name", _name);
             postDataParams.put("surname", _surname);
-            postDataParams.put("middlename", _middleName);
+            postDataParams.put("middle_name", _middleName);
             answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }

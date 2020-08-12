@@ -1,6 +1,7 @@
 /**
  * Вторая активность регистрации.
  * По кнопке "Зарегистрироваться" переходим на mainmenu.MenuActivity.
+ * Обращение к серверу ".../create_user".
  * **/
 
 package com.example.helpforcurator.input;
@@ -61,7 +62,7 @@ public class Regustration2Activity extends AppCompatActivity {
                         if (!s1.equals("")) {
                             if (!s3.equals("")) {
                                 if (!s4.equals("")){
-                                    new CreateAsyncTask(s, s1, s3, s4, name, surname, middleName).execute();
+                                    new CreateUserAsyncTask(s, s1, s3, s4, name, surname, middleName).execute();
                                 } else {
                                     login.setBackgroundColor(getColor(R.color.white));
                                     password.setBackgroundColor(getColor(R.color.white));
@@ -107,11 +108,11 @@ public class Regustration2Activity extends AppCompatActivity {
     }
 
     /** AsyncTask для обновления данных пользователя **/
-    class CreateAsyncTask extends AsyncTask<String, String, String> {
+    class CreateUserAsyncTask extends AsyncTask<String, String, String> {
         String _login, _password, _phone, _email, _name, _surname, _middleName,
-                answer, server = ConnectionHelper.getUrl() + "/create";
+                answer, server = ConnectionHelper.getUrl() + "/create_user";
 
-        public CreateAsyncTask(String _login, String _password, String _phone, String _email, String _name, String _surname, String _middleName) {
+        public CreateUserAsyncTask(String _login, String _password, String _phone, String _email, String _name, String _surname, String _middleName) {
             this._login = _login;
             this._password = _password;
             this._phone = _phone;
@@ -135,7 +136,7 @@ public class Regustration2Activity extends AppCompatActivity {
             postDataParams.put("email", _email);
             postDataParams.put("name", _name);
             postDataParams.put("surname", _surname);
-            postDataParams.put("middlename", _middleName);
+            postDataParams.put("middle_name", _middleName);
             answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }

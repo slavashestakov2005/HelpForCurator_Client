@@ -1,5 +1,6 @@
 /**
  * Класс для отображения чужих сообщений в активности chat.ChatActivity.
+ * Обращение к серверу ".../get_user_info".
  * **/
 
 package com.example.helpforcurator.chat;
@@ -67,7 +68,7 @@ public class Message extends RelativeLayout {
         @Override
         protected String doInBackground(String... params) {
             HashMap<String, String> postDataParams = new HashMap<String, String>();
-            postDataParams.put("id", "" + _id_user);
+            postDataParams.put("id_user", "" + _id_user);
             answer = ConnectionHelper.performGetCall(server, postDataParams);
             return null;
         }
